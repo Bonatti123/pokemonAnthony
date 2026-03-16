@@ -1,16 +1,99 @@
-# React + Vite
+# 🧭 Pokédex App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web que muestra una Pokédex interactiva utilizando la API pública de Pokémon.
 
-Currently, two official plugins are available:
+Permite explorar Pokémon, buscar por nombre y ver detalles individuales.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+#  Tecnologías utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Este proyecto fue construido usando herramientas modernas del ecosistema de React.
 
-## Expanding the ESLint configuration
+- ⚛️ React
+- ⚡ Vite
+- 🔀 React Router
+- 📡 React Query
+- 🎨 CSS
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+API utilizada:
+
+- https://pokeapi.co/
+
+---
+
+# ✨ Funcionalidades
+
+###  Búsqueda de Pokémon
+Permite buscar Pokémon por nombre de forma rápida.
+
+###  Tarjetas con animaciones
+Las tarjetas tienen efecto hover para mejorar la experiencia visual.
+
+### ⚡ Skeleton Loading
+Mientras los datos cargan se muestran skeleton cards animadas.
+
+###  Navegación dinámica
+Cada Pokémon tiene su propia página usando React Router.
+
+Ejemplo:
+
+/pokemon/25
+
+---
+
+#  Estructura del proyecto
+
+src
+
+api/
+pokemonApi.js
+
+components/
+PokemonSkeleton.jsx
+
+pages/
+PokemonList.jsx
+PokemonDetail.jsx
+
+router/
+AppRouter.jsx
+
+App.jsx
+
+---
+
+#  Qué aprendí en este proyecto
+
+En este proyecto practiqué:
+
+- Consumo de APIs REST
+- Uso de React Hooks
+- Manejo de datos con React Query
+- Navegación con React Router
+- Manejo de estados de carga
+- Organización profesional de proyectos
+- Uso de Gitmojis para commits
+
+---
+
+# ⚙️ Instalación
+
+Clonar el proyecto
+
+https://github.com/Bonatti123/pokemonAnthony.git
+
+
+Instalar dependencias
+npm install
+
+
+Ejecutar el proyecto
+npm run dev
+
+
+---
+
+#  Autor
+
+Anthony Bonatti

@@ -9,7 +9,7 @@ function PokemonList() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["pokemons"],
     queryFn: getPokemons
   });
@@ -22,6 +22,10 @@ function PokemonList() {
         ))}
       </div>
     );
+  }
+
+  if (error) {
+    return <p>Error cargando los pokémon</p>;
   }
 
   const filtered = data.results.filter((pokemon) =>
@@ -57,20 +61,22 @@ function PokemonList() {
 
         {filtered.map((pokemon, index) => {
 
-          const id = index + 1;
+  const id = index + 1;
 
-          const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 
-          return (
-            <Link key={pokemon.name} to={`/pokemon/${id}`} className="card">
+  return (
+    <Link key={pokemon.name} to={`/pokemon/${id}`} className="card">
 
-              <img src={image} alt={pokemon.name} />
+      <img src={image} alt={pokemon.name} />
 
-              <h3>{pokemon.name}</h3>
+      <h3>
+        #{id.toString().padStart(3, "0")} {pokemon.name}
+      </h3>
 
-            </Link>
-          );
-        })}
+    </Link>
+  );
+})}
 
       </div>
     </div>

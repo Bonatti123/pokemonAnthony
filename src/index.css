@@ -162,6 +162,7 @@ code {
 .card h3{
   text-transform: capitalize;
   margin-top: 10px;
+  font-weight: 600;
 }
 
 .filter{
