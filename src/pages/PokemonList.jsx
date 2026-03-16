@@ -59,9 +59,9 @@ function PokemonList() {
 
       <div className="grid">
 
-        {filtered.map((pokemon, index) => {
+        {filtered.map((pokemon) => {
 
-  const id = index + 1;
+  const id = pokemon.url.split("/")[6];
 
   const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 

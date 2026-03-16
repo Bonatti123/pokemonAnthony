@@ -1,4 +1,4 @@
-# 🧭 Pokédex App
+# Pokédex App
 
 Aplicación web que muestra una Pokédex interactiva utilizando la API pública de Pokémon.
 
