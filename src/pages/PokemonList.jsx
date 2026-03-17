@@ -8,10 +8,12 @@ function PokemonList() {
 
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [page, setPage] = useState(1);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["pokemons"],
-    queryFn: getPokemons
+    queryKey: ["pokemons", page],
+    queryFn: () => getPokemons(page),
+    keepPreviousData: true
   });
 
   if (isLoading) {
@@ -61,24 +63,49 @@ function PokemonList() {
 
         {filtered.map((pokemon) => {
 
-  const id = pokemon.url.split("/")[6];
+          const id = pokemon.url.split("/")[6];
 
-  const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+          const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 
-  return (
-    <Link key={pokemon.name} to={`/pokemon/${id}`} className="card">
+          return (
+            <Link key={pokemon.name} to={`/pokemon/${id}`} className="card">
 
-      <img src={image} alt={pokemon.name} />
+              <img src={image} alt={pokemon.name} />
 
-      <h3>
-        #{id.toString().padStart(3, "0")} {pokemon.name}
-      </h3>
+              <h3>
+                #{id.toString().padStart(3, "0")} {pokemon.name}
+              </h3>
 
-    </Link>
-  );
-})}
+            </Link>
+          );
+        })}
 
       </div>
+
+      {/* PAGINACIÓN */}
+
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+
+        <button
+          onClick={() => setPage((old) => Math.max(old - 1, 1))}
+          disabled={page === 1}
+        >
+          ⬅ Anterior
+        </button>
+
+        <span style={{ margin: "0 15px" }}>
+          Página {page}
+        </span>
+
+        <button
+          onClick={() => setPage((old) => old + 1)}
+          disabled={!data?.next}
+        >
+          Siguiente ➡
+        </button>
+
+      </div>
+
     </div>
   );
 }
