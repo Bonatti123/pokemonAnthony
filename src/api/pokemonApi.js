@@ -7,5 +7,9 @@ export async function getPokemons(page = 1) {
     `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
   );
 
+  if (!res.ok) {
+    throw new Error("Error al obtener datos");
+  }
+
   return res.json();
 }

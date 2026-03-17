@@ -30,9 +30,9 @@ function PokemonList() {
     return <p>Error cargando los pokémon</p>;
   }
 
-  const filtered = data.results.filter((pokemon) =>
+  const filtered = data?.results?.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(search.toLowerCase())
-  );
+  ) || [];
 
   return (
     <div className="container">
@@ -85,6 +85,12 @@ function PokemonList() {
       {/* PAGINACIÓN */}
 
       <div style={{ marginTop: "20px", textAlign: "center" }}>
+
+        <Link to="/create">
+          <button>Crear Post</button>
+        </Link>
+
+        <br /><br />
 
         <button
           onClick={() => setPage((old) => Math.max(old - 1, 1))}
