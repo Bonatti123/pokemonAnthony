@@ -14,6 +14,7 @@ function PokemonList() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [page, setPage] = useState(1);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   // DARK MODE
   const toggleDarkMode = () => {
@@ -26,11 +27,14 @@ function PokemonList() {
   }, [page]);
 
   // Aqui e utilizado React Query para consumir la API.Me permite manejar automaticamente el estado de carga, los errores y los datos.
-  const { data, isLoading, error } = useQuery({   
-    queryKey: ["pokemons", page],
-    queryFn: () => getPokemons(page),
-    keepPreviousData: true
-  });
+  const { data, isLoading, error } = useQuery({
+  queryKey: ["pokemons", page],
+  queryFn: async () => {
+    await delay(1000); // 👈 AQUÍ
+    return getPokemons(page);
+  },
+  keepPreviousData: true
+});
 
   //  DETALLES
   const { data: detailedData } = useQuery({
@@ -49,20 +53,20 @@ function PokemonList() {
   });
 
   // LOADING
-  if (isLoading || !detailedData) {
-    return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-4">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <PokemonSkeleton key={i} />
-        ))}
-      </div>
-    );
-  }
+  if (isLoading) {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-4">
+      {Array.from({ length: 10 }).map((_, i) => (
+        <PokemonSkeleton key={i} />
+      ))}
+    </div>
+  );
+}
 
   if (error) return <p>Error cargando</p>;
 
   // FILTRO
-  const filtered = detailedData.filter((pokemon) => {
+  const filtered = (detailedData || []).filter((pokemon) => {
     const matchName = pokemon.name
       .toLowerCase()
       .includes(search.toLowerCase());
