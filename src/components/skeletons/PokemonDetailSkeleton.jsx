@@ -2,9 +2,12 @@ function PokemonDetailSkeleton() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center 
     bg-gradient-to-br from-blue-100 to-purple-200 
-    dark:from-gray-800 dark:to-gray-900 animate-pulse">
+    dark:from-gray-800 dark:to-gray-900">
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 text-center">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 text-center relative overflow-hidden">
+
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_2.5s_infinite] 
+        bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
 
         <div className="w-32 h-32 mx-auto bg-gray-300 dark:bg-gray-600 rounded-full mb-4"></div>
 

@@ -1,8 +1,11 @@
 function PokemonSkeleton() {
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-md">
+    <div className="relative overflow-hidden p-4 rounded-2xl shadow-lg 
+    bg-white dark:bg-gray-800">
 
-      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+      {/* shimmer más lento */}
+      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2.5s_infinite] 
+      bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
 
       <div className="w-24 h-24 mx-auto rounded-full bg-gray-300 dark:bg-gray-600"></div>
 
@@ -14,4 +17,4 @@ function PokemonSkeleton() {
   );
 }
 
-export default PokemonSkeleton; 
+export default PokemonSkeleton;
