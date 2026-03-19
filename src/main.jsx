@@ -1,10 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./core/App"; // 👈 MUY IMPORTANTE
-import "./index.css"; // o "./core/styles/index.css" si lo moviste
+import App from "./core/App";
+import "./styles/global.css";
+
+// 🔥 IMPORTANTE
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// crear cliente
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    {/* ENVOLVER TODA LA APP */}
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>
 );
