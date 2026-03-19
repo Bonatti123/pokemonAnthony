@@ -1,99 +1,115 @@
-# Pokédex App
+# Pokédex App - React + Tailwind
 
-Aplicación web que muestra una Pokédex interactiva utilizando la API pública de Pokémon.
-
-Permite explorar Pokémon, buscar por nombre y ver detalles individuales.
+Aplicación web interactiva que consume la API de Pokémon para mostrar una Pokédex con búsqueda, filtros, paginación y vista de detalle.
 
 ---
 
-#  Tecnologías utilizadas
+## Tecnologías utilizadas
 
-Este proyecto fue construido usando herramientas modernas del ecosistema de React.
-
-- ⚛️ React
-- ⚡ Vite
-- 🔀 React Router
-- 📡 React Query
-- 🎨 CSS
-
-API utilizada:
-
-- https://pokeapi.co/
+- React (Vite)
+- React Query (@tanstack/react-query)
+- React Router DOM
+- Tailwind CSS
+- Fetch API
+- Zod (validación de formularios)
 
 ---
 
-# ✨ Funcionalidades
+## Instalación
 
-###  Búsqueda de Pokémon
-Permite buscar Pokémon por nombre de forma rápida.
+Clona el repositorio:
 
-###  Tarjetas con animaciones
-Las tarjetas tienen efecto hover para mejorar la experiencia visual.
+```bash
+git clone https://github.com/TU-USUARIO/TU-REPO.git
+cd TU-REPO
 
-### ⚡ Skeleton Loading
-Mientras los datos cargan se muestran skeleton cards animadas.
+# Instalar dependencias:
+- npm install
 
-###  Navegación dinámica
-Cada Pokémon tiene su propia página usando React Router.
-
-Ejemplo:
-
-/pokemon/25
-
----
-
-#  Estructura del proyecto
-
-src
-
-api/
-pokemonApi.js
-
-components/
-PokemonSkeleton.jsx
-
-pages/
-PokemonList.jsx
-PokemonDetail.jsx
-
-router/
-AppRouter.jsx
-
-App.jsx
-
----
-
-#  Qué aprendí en este proyecto
-
-En este proyecto practiqué:
-
-- Consumo de APIs REST
-- Uso de React Hooks
-- Manejo de datos con React Query
-- Navegación con React Router
-- Manejo de estados de carga
-- Organización profesional de proyectos
-- Uso de Gitmojis para commits
-
----
-
-# ⚙️ Instalación
-
-Clonar el proyecto
-
-https://github.com/Bonatti123/pokemonAnthony.git
-
-
-Instalar dependencias
-npm install
-
-
-Ejecutar el proyecto
+Ejecute el proyecto:
 npm run dev
 
+## API utilizada
+https://pokeapi.co/
 
----
+https://jsonplaceholder.typicode.com/
 
-#  Autor
+## Funcionalidades
+ # Busqueda Pokémon
+ permite buscar Pokémon por nombre en tienmpo real.
 
-Anthony Bonatti
+## Filtro por tipo
+Filtra Pokémon por tipo.
+. Fuego
+. Agua
+. Planta
+. Eléctrico
+
+## Paginación
+Navegación entre páginas usando:
+. Botón "Anterior"
+. Botón ""Siguiente
+
+## Vista de detalle
+Cada Pokémon tiene su propia página con información detallada.
+
+## Crear Post
+Formulario que permite crear un post usando JSONPlaceholder.
+
+Incluye:
+. Validación con Zod
+. Manejo de errores
+. Envio de datos
+
+## Modo oscuro (Dark Mode)
+Botón para cambiar entre:
+
+. Modo claro
+. Modo oscuro
+
+## UI moderna
+Diseña realizado con Tailwind CSS:
+
+. Grid responsive
+. Cards animadas (hover)
+. Botones con gradientes
+. Efectos visuales (scale,shadow)
+
+## Estructura del proyecto
+src/
+│
+├── api/
+│   └── pokemonApi.js
+│
+├── components/
+│   ├── PokemonSkeleton.jsx
+│
+├── pages/
+│   ├── PokemonList.jsx
+│   ├── PokemonDetail.jsx
+│   ├── CreatePost.jsx
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+
+## Hooks utilizados
+. useState -> manejo de estado
+. useQuery -> manejo de datos (React Query)
+.  useParams -> rutas dinámicas
+
+## Mejoras futuras
+. Optimizar llamadas a la API
+. Agregar más tipos de Pokémon
+. Implementar favoritos
+. Animación avanzadas
+. Deploy en producción
+
+## Deploy (opcional)
+ Puedes subir el proyecto a:
+
+ . Vercel
+ . Netlify
+
+ ## Autor
+ Anthony Bonatti
