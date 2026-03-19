@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pokédex App - React + Tailwind
 
 Aplicación web interactiva que consume la API de Pokémon para mostrar una Pokédex con búsqueda, filtros, paginación y vista de detalle.
@@ -113,3 +114,6 @@ src/
 
  ## Autor
  Anthony Bonatti
+=======
+# pokemonAnthony
+>>>>>>> parent of f76312c (feat: :tada: enpesando a trabajar en la prueba tecnica)
