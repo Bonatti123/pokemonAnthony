@@ -1,11 +1,11 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import PokemonDetailSkeleton from "../components/skeletons/PokemonDetailSkeleton";
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-// 🎨 COLORES
+// 🎨 COLORES POR TIPO
 const typeColors = {
   fire: "from-red-500 to-red-700",
   water: "from-blue-500 to-blue-700",
@@ -29,6 +29,7 @@ const typeColors = {
 
 function PokemonDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["pokemon", id],
@@ -36,19 +37,41 @@ function PokemonDetail() {
       await delay(800);
 
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      if (!res.ok) throw new Error("Error");
+      if (!res.ok) throw new Error("Error al cargar");
 
       return res.json();
     },
   });
 
+  // LOADING
   if (isLoading) return <PokemonDetailSkeleton />;
-  if (error) return <p className="text-center text-red-500">Error</p>;
+
+  // ERROR
+  if (error) {
+    return (
+      <p className="text-center text-red-500">
+        Error cargando el Pokémon
+      </p>
+    );
+  }
+
   if (!data) return null;
 
+  // 🎯 TIPO PRINCIPAL
   const mainType = data.types?.[0]?.type?.name;
   const bgGradient =
     typeColors[mainType] || "from-gray-500 to-gray-700";
+
+  // 🎥 GIF (si existe)
+  const animatedSprite =
+    data.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default;
+
+  // 🖼️ IMAGEN NORMAL
+  const officialImage =
+    data.sprites?.other?.["official-artwork"]?.front_default;
+
+  // ✅ FINAL
+  const imageToShow = animatedSprite || officialImage;
 
   return (
     <motion.div
@@ -57,8 +80,7 @@ function PokemonDetail() {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
       className={`min-h-screen flex items-center justify-center 
-      bg-gradient-to-br ${bgGradient} 
-      p-4`}
+      bg-gradient-to-br ${bgGradient} p-4`}
     >
 
       {/* CARD */}
@@ -72,20 +94,22 @@ function PokemonDetail() {
         text-center max-w-sm w-full relative overflow-hidden"
       >
 
-        {/* ✨ GLOW EFECTO */}
+        {/* ✨ GLOW */}
         <div className="absolute inset-0 bg-white/10 blur-2xl opacity-30"></div>
 
-        {/* BOTÓN */}
-        <Link
-          to="/"
-          className="relative z-10 inline-block mb-4 px-4 py-1 bg-yellow-400 text-black rounded-full hover:scale-105 transition"
+        {/* 🔙 BOTÓN VOLVER (CORREGIDO) */}
+        <button
+          onClick={() => navigate(-1)}
+          className="relative z-10 inline-block mb-4 px-4 py-1 
+          bg-yellow-400 text-black rounded-full 
+          hover:scale-105 transition"
         >
           ← Volver
-        </Link>
+        </button>
 
-        {/* IMAGEN */}
+        {/* 🧬 IMAGEN */}
         <motion.img
-          src={data.sprites.other["official-artwork"].front_default}
+          src={imageToShow}
           alt={data.name}
           className="w-40 mx-auto mb-4 relative z-10"
           initial={{ scale: 0 }}
