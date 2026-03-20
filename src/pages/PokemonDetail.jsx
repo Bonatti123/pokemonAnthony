@@ -10,7 +10,7 @@ function PokemonDetail() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["pokemon", id],
     queryFn: async () => {
-      await delay(5000); // ⏳ lento para ver skeleton
+      await delay(1200); // ⏳ lento para ver skeleton
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
       if (!res.ok) throw new Error("Error");
       return res.json();
