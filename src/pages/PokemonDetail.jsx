@@ -1,42 +1,18 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
 import PokemonDetailSkeleton from "../components/skeletons/PokemonDetailSkeleton";
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-// 🎨 COLORES POR TIPO
-const typeColors = {
-  fire: "from-red-500 to-red-700",
-  water: "from-blue-500 to-blue-700",
-  grass: "from-green-500 to-green-700",
-  electric: "from-yellow-400 to-yellow-600",
-  ground: "from-yellow-600 to-yellow-800",
-  rock: "from-gray-500 to-gray-700",
-  psychic: "from-pink-500 to-pink-700",
-  ice: "from-cyan-400 to-cyan-600",
-  dragon: "from-indigo-500 to-indigo-700",
-  dark: "from-gray-700 to-gray-900",
-  fairy: "from-pink-300 to-pink-500",
-  normal: "from-gray-300 to-gray-500",
-  fighting: "from-orange-600 to-orange-800",
-  poison: "from-purple-500 to-purple-700",
-  bug: "from-lime-500 to-lime-700",
-  flying: "from-sky-400 to-sky-600",
-  ghost: "from-indigo-700 to-indigo-900",
-  steel: "from-gray-400 to-gray-600",
-};
-
 function PokemonDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["pokemon", id],
     queryFn: async () => {
-      await delay(700);
+      await delay(5000); // ⏳ lento para ver skeleton
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      if (!res.ok) throw new Error("Error al cargar");
+      if (!res.ok) throw new Error("Error");
       return res.json();
     },
   });
@@ -44,130 +20,75 @@ function PokemonDetail() {
   if (isLoading) return <PokemonDetailSkeleton />;
 
   if (error) {
-    return (
-      <p className="text-center text-red-500">
-        Error cargando el Pokémon
-      </p>
-    );
+    return <p className="text-red-500 text-center">Error</p>;
   }
 
   if (!data) return null;
 
-  // 🎯 tipo principal
-  const mainType = data.types?.[0]?.type?.name;
-  const bgGradient =
-    typeColors[mainType] || "from-gray-500 to-gray-700";
-
   // 🎥 GIF
-  const animatedSprite =
+  const gif =
     data.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default;
 
   // 🖼️ HD
-  const officialImage =
+  const official =
     data.sprites?.other?.["official-artwork"]?.front_default;
 
+  // 🔄 fallback
+  const fallback = data.sprites?.front_default;
+
+  const image = gif || official || fallback;
+
   return (
-    <motion.div
-      key={id}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className={`min-h-screen flex items-center justify-center 
-      bg-gradient-to-br ${bgGradient} p-4`}
-    >
+    <div className="min-h-screen flex items-center justify-center 
+    bg-gradient-to-br from-orange-600 via-red-600 to-red-800 p-4">
 
-      <motion.div
-        initial={{ scale: 0.9, y: 40 }}
-        animate={{ scale: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="bg-red-700 dark:bg-gray-900 
-        rounded-3xl p-6 shadow-2xl border-8 border-red-900 
-        text-center max-w-sm w-full relative overflow-hidden"
-      >
+      <div className="bg-red-700 rounded-3xl p-6 shadow-2xl text-center max-w-sm w-full">
 
-        {/* ✨ GLOW */}
-        <div className="absolute inset-0 bg-white/10 blur-3xl opacity-30"></div>
-
-        {/* 🔙 VOLVER */}
-        <button
-          onClick={() => navigate(-1)}
-          className="relative z-10 mb-4 px-4 py-1 
-          bg-yellow-400 text-black rounded-full 
-          hover:scale-105 transition"
+        <Link
+          to="/"
+          className="inline-block mb-4 px-4 py-1 bg-yellow-400 text-black rounded-full"
         >
           ← Volver
-        </button>
+        </Link>
 
-        {/* 🧬 IMAGEN PRO */}
         <div className="relative w-40 h-40 mx-auto mb-4">
 
-          {/* 🖼️ FONDO HD */}
+          {/* fondo blur */}
           <img
-            src={officialImage}
-            alt={data.name}
+            src={official || fallback}
             className="absolute inset-0 w-full h-full object-contain opacity-30 blur-sm"
           />
 
-          {/* 🎥 GIF o fallback */}
-          <motion.img
-            src={animatedSprite || officialImage}
+          {/* imagen principal */}
+          <img
+            src={image}
             alt={data.name}
             className="relative w-full h-full object-contain"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", delay: 0.2 }}
-            whileHover={{ scale: 1.1, rotate: 2 }}
           />
 
         </div>
 
-        {/* NOMBRE */}
-        <h1 className="text-2xl font-bold capitalize text-white relative z-10">
+        <h1 className="text-2xl font-bold text-white capitalize">
           {data.name}
         </h1>
 
-        {/* ID */}
-        <p className="text-gray-200 relative z-10">
+        <p className="text-gray-200">
           #{data.id.toString().padStart(3, "0")}
         </p>
 
-        {/* TIPOS */}
-        <div className="flex justify-center gap-2 mt-3 relative z-10">
+        <div className="flex justify-center gap-2 mt-3">
           {data.types.map((t) => (
-            <motion.span
+            <span
               key={t.type.name}
-              whileHover={{ scale: 1.1 }}
               className="px-3 py-1 bg-white/30 text-white rounded-full capitalize text-sm"
             >
               {t.type.name}
-            </motion.span>
+            </span>
           ))}
         </div>
 
-        {/* STATS */}
-        <div className="mt-4 text-left relative z-10">
-          {data.stats.map((stat) => (
-            <motion.div
-              key={stat.stat.name}
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              className="mb-2"
-            >
-              <p className="text-white text-sm">
-                {stat.stat.name}: {stat.base_stat}
-              </p>
-
-              <div className="w-full bg-gray-300 rounded h-2 mt-1">
-                <div
-                  className="bg-yellow-400 h-2 rounded"
-                  style={{ width: `${stat.base_stat}%` }}
-                ></div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 

@@ -25,38 +25,54 @@ function PokemonCard({ pokemon }) {
   const id = pokemon?.id;
   if (!id) return null;
 
-  const image =
+  // 🎥 GIF
+  const gif =
+    pokemon?.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default;
+
+  // 🖼️ HD
+  const official =
     pokemon?.sprites?.other?.["official-artwork"]?.front_default;
 
-  // obtener tipo principal
-  const mainType = pokemon?.types?.[0]?.type?.name || "normal";
+  // 🔄 fallback
+  const fallback = pokemon?.sprites?.front_default;
 
-  // color dinámico
+  const image = gif || official || fallback;
+
+  const mainType = pokemon?.types?.[0]?.type?.name;
   const bgGradient = typeColors[mainType] || "from-gray-200 to-gray-400";
 
   return (
     <Link
-  to={`/pokemon/${id}`}
-  className={`
-    bg-gradient-to-br ${bgGradient}
-    rounded-2xl shadow-lg p-4 text-center 
-    border-2 border-white/20
-    transition-all duration-300 
-    hover:scale-105 hover:-translate-y-2 
-    hover:shadow-2xl text-white
-  `}
->
-      <img
-        src={image}
-        alt={pokemon.name}
-        className="w-24 h-24 mx-auto transition-transform duration-300 hover:scale-110"
-      />
+      to={`/pokemon/${id}`}
+      className={`
+        bg-gradient-to-br ${bgGradient}
+        rounded-2xl shadow-lg p-4 text-center 
+        border-2 border-white/20
+        transition-all duration-300 
+        hover:scale-105 hover:-translate-y-2 
+        hover:shadow-2xl text-white
+      `}
+    >
+      <div className="relative w-24 h-24 mx-auto">
+
+        {/* fondo blur */}
+        <img
+          src={official || fallback}
+          className="absolute inset-0 w-full h-full object-contain opacity-30 blur-sm"
+        />
+
+        {/* imagen principal */}
+        <img
+          src={image}
+          alt={pokemon.name}
+          className="relative w-full h-full object-contain"
+        />
+      </div>
 
       <h3 className="mt-2 font-semibold capitalize">
         #{id.toString().padStart(3, "0")} {pokemon.name}
       </h3>
 
-      {/*  Tipos */}
       <div className="flex justify-center gap-2 mt-2">
         {pokemon.types?.map((t) => (
           <span
@@ -67,8 +83,8 @@ function PokemonCard({ pokemon }) {
           </span>
         ))}
       </div>
-      
     </Link>
   );
 }
+
 export default PokemonCard;
