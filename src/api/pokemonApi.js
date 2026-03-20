@@ -4,8 +4,8 @@ export const getPokemons = async (page = 1) => {
   const limit = 20;
   const offset = (page - 1) * limit;
 
-  // ⏳ 🔥 HACEMOS LENTA LA API (AJUSTA AQUÍ)
-  await delay(5000); // 👉 5 segundos (puedes subir a 10000 o 20000)
+  // ⏳ HACEMOS LENTA LA API (AJUSTA AQUÍ)
+  await delay(5000); // 5 segundos (puedes subir a 10000 o 20000)
 
   const res = await fetch(
     `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
