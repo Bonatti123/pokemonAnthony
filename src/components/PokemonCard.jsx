@@ -28,10 +28,10 @@ function PokemonCard({ pokemon }) {
   const image =
     pokemon?.sprites?.other?.["official-artwork"]?.front_default;
 
-  // 🔹 obtener tipo principal
+  // obtener tipo principal
   const mainType = pokemon?.types?.[0]?.type?.name || "normal";
 
-  // 🔹 color dinámico
+  // color dinámico
   const bgGradient = typeColors[mainType] || "from-gray-200 to-gray-400";
 
   return (
@@ -56,7 +56,7 @@ function PokemonCard({ pokemon }) {
         #{id.toString().padStart(3, "0")} {pokemon.name}
       </h3>
 
-      {/* 🔹 Tipos */}
+      {/*  Tipos */}
       <div className="flex justify-center gap-2 mt-2">
         {pokemon.types?.map((t) => (
           <span
