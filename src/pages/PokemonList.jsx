@@ -4,10 +4,10 @@ import { getPokemons } from "../api/pokemonApi";
 import { Link } from "react-router-dom";
 import PokemonSkeleton from "../components/skeletons/PokemonSkeleton";
 import PokemonCard from "../components/PokemonCard";
+import PokeLoader from "../components/loaders/PokemonLoader";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { MdDarkMode } from "react-icons/md";
 
 function PokemonList() {
   const [search, setSearch] = useState("");
@@ -32,11 +32,6 @@ function PokemonList() {
     );
   };
 
-  // SCROLL
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page]);
-
   // QUERY
   const { data, isLoading, error } = useQuery({
     queryKey: ["pokemons", page],
@@ -45,7 +40,7 @@ function PokemonList() {
   });
 
   if (error) {
-    return <p className="text-center text-red-500">Error cargando</p>;
+    return <p className="text-center text-red-500">Error</p>;
   }
 
   const filtered = (data?.results || []).filter((pokemon) => {
@@ -61,24 +56,16 @@ function PokemonList() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-600 via-red-600 to-red-800 dark:from-gray-900 dark:to-black p-4">
+    <>
+      {/* 🔥 LOADER GLOBAL */}
+      {isLoading && <PokeLoader />}
 
-      {/* 🔴 POKEDEX */}
-      <div className="max-w-6xl mx-auto bg-red-700 dark:bg-gray-900 rounded-3xl p-4 shadow-2xl border-8 border-red-900">
+      <div className="min-h-screen bg-gradient-to-br from-orange-600 via-red-600 to-red-800 p-4">
 
-        {/* 🔵 LUCES */}
-        <div className="flex gap-2 mb-4">
-          <div className="w-6 h-6 bg-blue-400 rounded-full"></div>
-          <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-          <div className="w-4 h-4 bg-yellow-400 rounded-full"></div>
-          <div className="w-4 h-4 bg-green-400 rounded-full"></div>
-        </div>
+        <div className="max-w-6xl mx-auto bg-red-700 rounded-3xl p-4 shadow-2xl border-8 border-red-900">
 
-        {/* 🖥️ PANTALLA */}
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4">
-
-          {/* 🔥 ESTO YA NO DESAPARECE */}
-          <h1 className="text-4xl font-bold text-center mb-6 text-red-600 dark:text-white">
+          {/* HEADER */}
+          <h1 className="text-4xl font-bold text-center mb-6 text-white">
             Pokédex
           </h1>
 
@@ -115,7 +102,7 @@ function PokemonList() {
             <option value="electric">Eléctrico</option>
           </select>
 
-          {/* 🔥 SOLO EL GRID CAMBIA */}
+          {/* GRID */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
             {isLoading
@@ -139,7 +126,7 @@ function PokemonList() {
               <FaArrowLeft />
             </button>
 
-            <span className="text-white">Página {page}</span>
+            <span className="text-black">Página {page}</span>
 
             <button
               onClick={() => setPage((old) => old + 1)}
@@ -163,7 +150,7 @@ function PokemonList() {
 
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
