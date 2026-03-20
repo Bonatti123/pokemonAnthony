@@ -85,12 +85,6 @@ function PokemonList() {
 
           {/* botones */}
           <div className="flex justify-between mb-4">
-            <button
-              onClick={toggleDarkMode}
-              className="px-4 py-2 rounded-full bg-black text-white dark:bg-yellow-400 dark:text-black"
-            >
-              <MdDarkMode />
-            </button>
 
             <Link to="/create">
               <button className="px-4 py-2 bg-blue-500 text-white rounded-full">
