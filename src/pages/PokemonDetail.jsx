@@ -1,10 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import PokemonDetailSkeleton from "../components/skeletons/PokemonDetailSkeleton";
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-// COLORES POR TIPO
+// 🎨 COLORES
 const typeColors = {
   fire: "from-red-500 to-red-700",
   water: "from-blue-500 to-blue-700",
@@ -32,95 +33,107 @@ function PokemonDetail() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["pokemon", id],
     queryFn: async () => {
-      await delay(1200);
+      await delay(800);
 
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      if (!res.ok) throw new Error("Error al cargar");
+      if (!res.ok) throw new Error("Error");
 
       return res.json();
     },
   });
 
   if (isLoading) return <PokemonDetailSkeleton />;
-
-  if (error) {
-    return (
-      <p className="text-center text-red-500">
-        Error cargando el Pokémon
-      </p>
-    );
-  }
-
+  if (error) return <p className="text-center text-red-500">Error</p>;
   if (!data) return null;
 
-  // TIPO PRINCIPAL
   const mainType = data.types?.[0]?.type?.name;
-
-  // GRADIENTE DINÁMICO
   const bgGradient =
     typeColors[mainType] || "from-gray-500 to-gray-700";
 
   return (
-    <div
+    <motion.div
+      key={id}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
       className={`min-h-screen flex items-center justify-center 
       bg-gradient-to-br ${bgGradient} 
-      dark:from-gray-900 dark:to-black p-4 transition`}
+      p-4`}
     >
 
-      <div
+      {/* CARD */}
+      <motion.div
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        whileHover={{ scale: 1.03 }}
         className="bg-red-700 dark:bg-gray-900 
         rounded-3xl p-6 shadow-2xl border-8 border-red-900 
-        text-center max-w-sm w-full transition"
+        text-center max-w-sm w-full relative overflow-hidden"
       >
 
-        {/* BOTÓN VOLVER */}
+        {/* ✨ GLOW EFECTO */}
+        <div className="absolute inset-0 bg-white/10 blur-2xl opacity-30"></div>
+
+        {/* BOTÓN */}
         <Link
           to="/"
-          className="inline-block mb-4 px-4 py-1 bg-yellow-400 text-black rounded-full hover:scale-105 transition"
+          className="relative z-10 inline-block mb-4 px-4 py-1 bg-yellow-400 text-black rounded-full hover:scale-105 transition"
         >
           ← Volver
         </Link>
 
         {/* IMAGEN */}
-        <img
+        <motion.img
           src={data.sprites.other["official-artwork"].front_default}
           alt={data.name}
-          className="w-40 mx-auto mb-4 transition-transform duration-300 hover:scale-110"
+          className="w-40 mx-auto mb-4 relative z-10"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.3, type: "spring" }}
+          whileHover={{ scale: 1.1, rotate: 2 }}
         />
 
         {/* NOMBRE */}
-        <h1 className="text-2xl font-bold capitalize text-white">
+        <h1 className="text-2xl font-bold capitalize text-white relative z-10">
           {data.name}
         </h1>
 
         {/* ID */}
-        <p className="text-gray-200">
+        <p className="text-gray-200 relative z-10">
           #{data.id.toString().padStart(3, "0")}
         </p>
 
         {/* TIPOS */}
-        <div className="flex justify-center gap-2 mt-3">
+        <div className="flex justify-center gap-2 mt-3 relative z-10">
           {data.types.map((t) => (
-            <span
+            <motion.span
               key={t.type.name}
+              whileHover={{ scale: 1.1 }}
               className="px-3 py-1 bg-white/30 text-white rounded-full capitalize text-sm"
             >
               {t.type.name}
-            </span>
+            </motion.span>
           ))}
         </div>
 
         {/* STATS */}
-        <div className="mt-4 text-left">
+        <div className="mt-4 text-left relative z-10">
           {data.stats.map((stat) => (
-            <p key={stat.stat.name} className="text-white text-sm">
+            <motion.p
+              key={stat.stat.name}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-white text-sm"
+            >
               {stat.stat.name}: {stat.base_stat}
-            </p>
+            </motion.p>
           ))}
         </div>
 
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
